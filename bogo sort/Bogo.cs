@@ -1,22 +1,20 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace bogo_sort
 {
+	/// <summary>
+	/// представление сортировщика Bogo.
+	/// </summary>
 	public class Bogo
 	{
 		#region fields
 		/// <summary>
 		/// объект случайного числа.
 		/// </summary>
-		Random random = new Random();
+		private readonly Random random = new Random();
 		/// <summary>
 		/// поле с массивом.
 		/// </summary>
-		long[] array;
+		private long[] array;
 		#endregion
 		#region properties
 		/// <summary>
@@ -44,7 +42,7 @@ namespace bogo_sort
 		#region methods
 		#region outp
 		/// <summary>
-		/// вывод массива в консоль.
+		/// вывод массива <see cref="array"/> в консоль.
 		/// </summary>
 		public void Show()
 		{
