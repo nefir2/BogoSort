@@ -40,7 +40,7 @@ namespace bogo_sort
 		}
 		#endregion
 		#region methods
-		#region outp
+		#region Show
 		/// <summary>
 		/// вывод массива <see cref="array"/> в консоль.
 		/// </summary>
@@ -49,18 +49,42 @@ namespace bogo_sort
 			for (int i = 0; i < array.Length; i++) Console.Write(array[i] + " "); //вывод всего массива в строку.
 			Console.WriteLine(); //перемещение курсора на следующую строку при выводе всего массива.
 		}
-		#endregion
-		#region array init
+		/// <summary>
+		/// вывод массива указанного в параметрах в консоль.
+		/// </summary>
+		/// <param name="array">массив который надо вывести на экран.</param>
+		public static void Show(long[] array)
+		{
+			for (int i = 0; i < array.Length; i++) Console.Write(array[i] + " "); //вывод всего массива в строку.
+			Console.WriteLine(); //перемещение курсора на следующую строку при выводе всего массива.
+		}
+        #endregion
+        #region NewArr
+        /// <summary>
+        /// создание нового массива и его элементов.
+        /// </summary>
+        /// <remarks>
+        /// размер массива и его элементы случайны.
+        /// </remarks>
+        public long[] NewArr()
+		{
+			array = new long[random.Next(100)]; //создание нового массива случайного размера.
+			for (int i = 0; i < array.Length; i++) array[i] = random.Next(1000); //установка случайных элементов массива.
+			return array;
+		}
 		/// <summary>
 		/// создание нового массива и его элементов.
 		/// </summary>
 		/// <remarks>
 		/// размер массива и его элементы случайны.
 		/// </remarks>
-		public long[] NewArr()
+		/// <param name="maxLength">максимальное количество элементов массива.</param>
+		/// <param name="maxElement">максимальное значение элементов массива.</param>
+		/// <returns></returns>
+		public long[] NewArr(int maxLength, long maxElement)
 		{
-			array = new long[random.Next(100)]; //создание нового массива случайного размера.
-			for (int i = 0; i < array.Length; i++) array[i] = random.Next(1000); //установка случайных элементов массива.
+			array = new long[random.Next(maxLength)]; //создание нового массива случайного размера.
+			for (int i = 0; i < array.Length; i++) array[i] = random.NextInt64(maxElement); //установка случайных элементов массива.
 			return array;
 		}
 		#endregion
@@ -86,17 +110,18 @@ namespace bogo_sort
 		{
 			while (!BogoCheck()) //проверка бого.
 			{
-				Console.Write($"попытка рассортировать массив #{Iteration}: ");
+				Console.Write($"попытка рассортировать массив #{Iteration, 6}: ");
 				Show(); //вывод массива.
 				Shuffle(); //получение новоой расстановки массива.
 				Iteration++; //установка следующей итерации.
 			}
-			Console.Write($"попытка рассортировать массив #{Iteration}: "); //вывод сообщения удачной сортировки.
+			Console.Write($"попытка рассортировать массив #{Iteration, 6}: "); //вывод сообщения удачной сортировки.
 			Show(); //вывод сортированного массива.
 			Console.WriteLine($"\nBogo Sort рассортировал все элементы с {Iteration} попытки."); //вывод окончательного сообщения.
 		}
 		#endregion
 		#region changer
+		#region Shuffle
 		/// <summary>
 		/// перестановка всех элементов массива <see cref="array"/> случайным образом.
 		/// </summary>
@@ -111,15 +136,61 @@ namespace bogo_sort
 			//return array; //возврат перемешанного массива.
 		}
 		/// <summary>
+		/// перестановка всех элементов массива указанного в параметрах случайным образом.
+		/// </summary>
+		/// <param name="array">массив, в котором надо осуществить перестановку.</param>
+		/// <returns>перемешанный массив.</returns>
+		public static long[] Shuffle(long[] array)
+		{
+			Random rnd = new Random(); //создание объекта рандома.
+			for (int i = 0; i < array.Length; i++) //цикл по массиву.
+			{
+				int second = rnd.Next(array.Length); //получение случайной второй позиции.
+				Swapper(ref array, i, second); //смена элементов на указанных позициях.
+			}
+			return array; //возврат перемешанного массива.
+		}
+		#endregion
+		#region Swapper
+		/// <summary>
 		/// метод меняющий местами элементы в массиве <see cref="array"/>.
 		/// </summary>
 		/// <param name="pos1">первый элемент, который надо поменять местами со вторым элементом.</param>
 		/// <param name="pos2">второй элемент, который надо поменять местами с первым элементом.</param>
+		/// <exception cref="IndexOutOfRangeException"
 		private void Swapper(int pos1, int pos2)
 		{
-			if (pos1 > array.Length || pos2 > array.Length || pos1 < 0 || pos2 < 0) return; //если позиции вышли за рамки массива - выход из метода.
+			if (pos1 > array.Length || pos2 > array.Length || pos1 < 0 || pos2 < 0) throw new IndexOutOfRangeException(); //если позиции вышли за рамки массива - выбрасывание исключения.
 			(array[pos2], array[pos1]) = (array[pos1], array[pos2]); //смена позиций массива.
 		}
+		/// <summary>
+		/// метод меняющий местами элементы в массиве указанном в параметрах.
+		/// </summary>
+		/// <param name="array">массив в котором надо поменять местами элементы.</param>
+		/// <param name="pos1">первый элемент, который надо поменять местами со вторым элементом.</param>
+		/// <param name="pos2">второй элемент, который надо поменять местами с первым элементом.</param>
+		/// <exception cref="IndexOutOfRangeException"/>
+		public static void Swapper(ref long[] array, int pos1, int pos2)
+		{
+			if (pos1 > array.Length || pos2 > array.Length || pos1 < 0 || pos2 < 0) throw new IndexOutOfRangeException(); //если позиции вышли за рамки массива - выбрасывание исключения.
+			(array[pos2], array[pos1]) = (array[pos1], array[pos2]); //смена позиций массива.
+			
+			//return array;
+		}
+		/// <summary>
+		/// метод меняющий местами элементы в массиве указанном в параметрах.
+		/// </summary>
+		/// <param name="array">массив в котором надо поменять местами элементы.</param>
+		/// <param name="pos1">первый элемент, который надо поменять местами со вторым элементом.</param>
+		/// <param name="pos2">второй элемент, который надо поменять местами с первым элементом.</param>
+		/// <exception cref="IndexOutOfRangeException"/>
+		public static long[] Swapper(long[] array, int pos1, int pos2)
+		{
+			if (pos1 > array.Length || pos2 > array.Length || pos1 < 0 || pos2 < 0) throw new IndexOutOfRangeException(); //если позиции вышли за рамки массива - выбрасывание исключения.
+			(array[pos2], array[pos1]) = (array[pos1], array[pos2]); //смена позиций массива.
+			return array;
+		}
+		#endregion
 		#endregion
 		#endregion
 	}
