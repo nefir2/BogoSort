@@ -1,14 +1,25 @@
-﻿namespace bogo_sort
+﻿using System;
+namespace bogo_sort
 {
-	public  class Program
+	internal class Program
 	{
 		/// <summary>
 		/// точка входа программы.
 		/// </summary>
-		static void Main()
+		private static void Main()
 		{
-			Bogo bogo = new Bogo(new long[] {2, 1, 3, 4, 5}); //6 000 000 попыток потратил на то чтобы рассортировать это как надо.
-			bogo.Start();
+			ConsoleKeyInfo key;
+			Bogo bogo;
+			int[] x = new int[10];
+			x[11] = 0;
+			do
+			{
+				bogo = new Bogo(new long[] { 1, 0 }); //6 000 000 попыток потратил на то чтобы рассортировать это как надо.
+				bogo.Start();
+				Console.Write("restart?\n1.yes\n2.no\nchoice: ");
+				do { key = Console.ReadKey(true); } while (key.KeyChar != '1' && key.KeyChar != '2');
+				Console.WriteLine();
+			} while (key.KeyChar == '1');
 		}
 	}
 }
