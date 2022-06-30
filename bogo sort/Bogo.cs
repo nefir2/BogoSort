@@ -84,7 +84,7 @@ namespace bogo_sort
 		public long[] NewArr(int maxLength, long maxElement)
 		{
 			array = new long[random.Next(maxLength)]; //создание нового массива случайного размера.
-			for (int i = 0; i < array.Length; i++) array[i] = random.NextInt64(maxElement); //установка случайных элементов массива.
+			for (int i = 0; i < array.Length; i++) array[i] = random.Next((int)maxElement); //установка случайных элементов массива.
 			return array;
 		}
 		#endregion
